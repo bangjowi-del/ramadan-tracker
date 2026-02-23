@@ -10,6 +10,15 @@
   direction: rtl;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 body {
   @apply antialiased selection:bg-[#F27D26]/30;
 }
