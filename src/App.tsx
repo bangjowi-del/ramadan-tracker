@@ -103,7 +103,7 @@ export default function App() {
   const isEid = todayStr === eidDate;
 
   return (
-    <div className="min-h-screen bg-[#E6E9EF] text-[#4A5568] font-sans p-4 md:p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-[#E6E9EF] text-[#4A5568] font-sans p-6 md:p-12 flex flex-col items-center overflow-x-hidden">
       {/* Header */}
       <header className="w-full max-w-md flex justify-between items-center mb-8">
         <div className="flex items-center gap-2">
@@ -137,7 +137,7 @@ export default function App() {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-[#E6E9EF] rounded-[2rem] shadow-[12px_12px_24px_#b8bec9,-12px_-12px_24px_#ffffff] p-8 mb-8 relative overflow-hidden"
+        className="w-full max-w-md bg-[#E6E9EF] rounded-[2rem] shadow-[12px_12px_24px_#b8bec9,-12px_-12px_24px_#ffffff] p-8 mb-8 relative"
       >
         <div className="relative z-10">
           <p className="text-sm font-semibold uppercase tracking-widest opacity-50 mb-2">
@@ -180,7 +180,7 @@ export default function App() {
         </div>
         
         {/* Background Decoration */}
-        <div className="absolute -right-10 -top-10 opacity-5">
+        <div className="absolute -right-10 -top-10 opacity-5 pointer-events-none overflow-hidden rounded-[2rem]">
           <Moon className="w-48 h-48" />
         </div>
 
@@ -260,7 +260,7 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/10 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-10 md:p-16 bg-black/10 backdrop-blur-sm"
             onClick={() => setShowDua(null)}
           >
             <motion.div 
@@ -297,35 +297,42 @@ export default function App() {
       </AnimatePresence>
 
       {/* Upcoming Days List */}
-      <div className="w-full max-w-md mb-8">
+      <div className="w-full max-w-md mb-8 px-2">
         <h3 className="text-sm font-bold uppercase opacity-40 mb-4 px-2">Nächste Tage</h3>
-        <div className="space-y-4">
-          {ALL_DATA.filter(d => d.date > tomorrowStr).slice(0, 3).map((day, idx) => (
-            <div 
-              key={day.date}
-              className="bg-[#E6E9EF] rounded-2xl shadow-[4px_4px_8px_#b8bec9,-4px_-4px_8px_#ffffff] p-4 flex justify-between items-center"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#E6E9EF] rounded-xl shadow-[inset_2px_2px_4px_#b8bec9,inset_-2px_-2px_4px_#ffffff] flex items-center justify-center text-xs font-bold text-[#F27D26]">
-                  {day.dayName}
+        <div className="relative">
+          <div className="max-h-[320px] overflow-y-auto px-4 py-4 -mx-4 space-y-5 scrollbar-hide hover:scrollbar-default transition-all">
+            {ALL_DATA.filter(d => d.date > tomorrowStr).map((day, idx) => (
+              <motion.div 
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                key={day.date}
+                className="bg-[#E6E9EF] rounded-2xl shadow-[6px_6px_12px_#b8bec9,-6px_-6px_12px_#ffffff] p-4 flex justify-between items-center"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-[#E6E9EF] rounded-xl shadow-[inset_2px_2px_4px_#b8bec9,inset_-2px_-2px_4px_#ffffff] flex items-center justify-center text-xs font-bold text-[#F27D26]">
+                    {day.dayName}
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#2D3748]">{new Date(day.date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}</p>
+                    <p className="text-[10px] opacity-40">Ramadan Tag {RAMADAN_DATA.findIndex(d => d.date === day.date) + 1 || "Shawwal"}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs font-bold text-[#2D3748]">{new Date(day.date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}</p>
-                  <p className="text-[10px] opacity-40">Ramadan Tag {RAMADAN_DATA.findIndex(d => d.date === day.date) + 1}</p>
+                <div className="flex gap-6 text-right">
+                  <div>
+                    <p className="text-[8px] font-bold opacity-30 uppercase">Sahar</p>
+                    <p className="text-sm font-bold text-[#2D3748]">{day.sahar}</p>
+                  </div>
+                  <div>
+                    <p className="text-[8px] font-bold opacity-30 uppercase">Iftar</p>
+                    <p className="text-sm font-bold text-[#2D3748]">{day.iftar}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-6 text-right">
-                <div>
-                  <p className="text-[8px] font-bold opacity-30 uppercase">Sahar</p>
-                  <p className="text-sm font-bold text-[#2D3748]">{day.sahar}</p>
-                </div>
-                <div>
-                  <p className="text-[8px] font-bold opacity-30 uppercase">Iftar</p>
-                  <p className="text-sm font-bold text-[#2D3748]">{day.iftar}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+          {/* Gradient Fade to indicate scroll */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#E6E9EF] via-[#E6E9EF]/80 to-transparent pointer-events-none rounded-b-2xl z-10" />
         </div>
       </div>
 
