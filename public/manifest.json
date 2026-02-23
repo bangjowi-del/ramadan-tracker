@@ -1,0 +1,16 @@
+{
+  "short_name": "Ramadan",
+  "name": "Ramadan Planer Obertshausen",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#E6E9EF",
+  "background_color": "#E6E9EF"
+}
